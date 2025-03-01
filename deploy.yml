@@ -1,12 +1,29 @@
 ---
 - name: Deploy Calculator Docker Image
   hosts: localhost
-  remote_user: purnendu
-  become: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
+    - name: Debug Python Interpreter and Libraries
+      command: /usr/bin/python3 --version
+      register: python_version
+
+    - name: Display Python version
+      debug:
+        var: python_version.stdout
+
+    - name: Check if docker library is installed
+      command: /usr/bin/python3 -c "import docker; print(docker.__version__)"
+      register: docker_library
+
+    - name: Display docker library version
+      debug:
+        var: docker_library.stdout
+
     - name: Pull Docker Image
       docker_image:
-        name: "calculator"
+        name: purnendu17/calculator
+        tag: latest
         source: pull
       register: docker_pull_result
 
@@ -26,4 +43,4 @@
       ignore_errors: yes
 
     - name: Run Docker container
-      shell: docker run -it -d --name calculator calculator
+      shell: docker run -it -d --name calculator purnendu17/calculator:latest
