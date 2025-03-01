@@ -1,7 +1,7 @@
 ---
 - name: Deploy Calculator Docker Image
   hosts: localhost
-  remote_user: priyansh
+  remote_user: purnendu
   become: false
   tasks:
     - name: Pull Docker Image
