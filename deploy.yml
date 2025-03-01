@@ -1,17 +1,51 @@
 ---
 - name: Deploy Calculator Docker Image
   hosts: localhost
-  become: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
+    # Debug Python interpreter and libraries
+    - name: Debug Python Interpreter and Libraries
+      command: python3 --version
+      register: python_version
+
+    - name: Display Python version
+      debug:
+        var: python_version.stdout
+
+    - name: Check if docker library is installed
+      command: python3 -c "import docker; print(docker.__version__)"
+      register: docker_library
+
+    - name: Display docker library version
+      debug:
+        var: docker_library.stdout
+
+    # Pull Docker image
     - name: Pull Docker Image
       docker_image:
-        name: purnendu_17/calculator
+        name: purnendu17/calculator
+        tag: latest
         source: pull
+      register: docker_pull_result
 
-    - name: Start Docker Container
-      docker_container:
-        name: scientific-calculator
-        image: purnendu_17/calculator:latest
+    - name: Display Docker Pull Result
+      debug:
+        var: docker_pull_result
+
+    # Ensure Docker service is running
+    - name: Ensure Docker service is running
+      service:
+        name: docker
         state: started
-        ports:
-          - "8081:8080"
+
+    # Stop and remove existing container (if it exists)
+    - name: Stop and Remove Existing Container (if it exists)
+      shell: |
+        docker stop calculator || true
+        docker rm calculator || true
+      ignore_errors: yes
+
+    # Run Docker container
+    - name: Run Docker container
+      shell: docker run -it -d --name calculator purnendu17/calculator:latest
