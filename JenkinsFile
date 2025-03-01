@@ -13,6 +13,13 @@ pipeline {
                     git branch: 'master', url: "${GITHUB_REPO_URL}"
                 }
             }
+
+                    stage('Check Python Version') {
+                        steps {
+                            sh 'python3 --version'
+                        }
+                    }
+
         }
 
         stage('Build') {
