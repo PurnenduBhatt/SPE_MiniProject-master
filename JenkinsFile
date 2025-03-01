@@ -3,6 +3,9 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'purnendu17/calculator:latest'
         GITHUB_REPO_URL = 'https://github.com/PurnenduBhatt/SPE_MiniProject_master.git'
+        // Set environment variables for Python and Docker
+        PATH = "/usr/bin:/usr/local/bin:${env.PATH}"
+        PYTHONPATH = "/usr/lib/python3.10/site-packages"
     }
 
     stages {
@@ -13,7 +16,18 @@ pipeline {
                     git branch: 'master', url: "${GITHUB_REPO_URL}"
                 }
             }
+        }
 
+        stage('Check Python Version') {
+            steps {
+                sh 'python3 --version'
+            }
+        }
+
+        stage('Check Docker Library') {
+            steps {
+                sh 'python3 -c "import docker; print(docker.__version__)"'
+            }
         }
 
         stage('Build') {
