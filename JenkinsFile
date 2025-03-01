@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'PurnenduBhatt/calculator:latest'
-        GITHUB_REPO_URL = ''
+        DOCKER_IMAGE = 'purnendu17/calculator:latest'
+        GITHUB_REPO_URL = 'https://github.com/PurnenduBhatt/SPE_MiniProject_master.git'
         OPTION = 1
         NUMBER = 2
         EXP = 3
