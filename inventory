@@ -1,3 +1,9 @@
-
-[localhost]
-localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Pull Docker Image
+      docker_image:
+        name: purnendu17/calculator
+        tag: latest
+        source: pull
