@@ -1,10 +1,1 @@
-- hosts: localhost
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-
-  tasks:
-    - name: Pull Docker Image
-      docker_image:
-        name: purnendu17/calculator
-        tag: latest
-        source: pull
+localhost ansible_python_interpreter=/usr/bin/python3
